@@ -88,3 +88,11 @@ Here, tasks.go will provide the API to manage tasks, parse and write markdown ch
 We will ensure that refreshing cached PWA assets is possible from the sidebar via a "refresh" button.
 
 Refer to tasks.md for what goes into each file.
+
+## Prompt 3
+
+Mark the tasks completed so far in tasks.md and then implement the remaining methods in "server.go"
+
+### Prompt 3.1
+
+server.go:118 declared and not used: path compiler UnusedVar

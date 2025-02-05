@@ -9,20 +9,20 @@
 
 ### Project Setup
 
-- [ ] Initialize Go module
-- [ ] Create directory structure (static/, data/)
-- [ ] Set up basic Go server with gorilla/mux
-- [ ] Create initial HTML/CSS/JS files
+- [x] Initialize Go module
+- [x] Create directory structure (static/, data/)
+- [x] Set up basic Go server with gorilla/mux
+- [x] Create initial HTML/CSS/JS files
 
 ### Backend Development
 
-- [ ] Implement file operations for markdown files
+- [x] Implement file operations for markdown files
 - [ ] Create API endpoints:
-  - [ ] GET /api/tasks/{date} - Get tasks for date
-  - [ ] POST /api/tasks/{date} - Save tasks for date
-  - [ ] GET /api/templates - List available templates
-  - [ ] GET /api/templates/{name} - Get specific template
-- [ ] Add WebSocket support for real-time sync
+  - [x] GET /api/tasks/{date} - Get tasks for date
+  - [x] POST /api/tasks/{date} - Save tasks for date
+  - [x] GET /api/templates - List available templates
+  - [x] GET /api/templates/{name} - Get specific template
+- [x] Add WebSocket support for real-time sync
 - [ ] Implement template management
 
 ### Frontend Core
