@@ -4,32 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
     <title>Daily Schedule</title>
     <link rel="stylesheet" href="/static/app.css">
     <link rel="manifest" href="/static/manifest.json">
 </head>
 
 <body>
-    <div class="toolbar top">
-        <button id="menuBtn">☰</button>
-        <div id="currentDate"></div>
-        <button id="addTask">+</button>
-        <div class="day-progress"></div>
-    </div>
+    <header class="toolbar top">
+        <button id="menuBtn" aria-label="Menu">☰</button>
+        <time id="currentDate" datetime=""></time>
+        <button id="addTask" aria-label="Add Task">+</button>
+        <div class="progress day-progress" role="progressbar" aria-label="Day progress"></div>
+    </header>
 
-    <div id="menu" class="sidebar">
+    <nav id="menu" class="sidebar" aria-label="Main menu">
         <a href="#" id="todayLink">Today</a>
         <button id="refreshPwa">Refresh App</button>
-    </div>
+    </nav>
 
-    <main id="taskList"></main>
+    <main id="taskList" class="task-list">
+        <!-- Tasks will be inserted here -->
+    </main>
 
-    <div class="toolbar bottom">
-        <div class="task-progress"></div>
-        <div id="currentTask"></div>
-        <button id="playPause">▶</button>
-        <button id="nextTask">⏭</button>
-    </div>
+    <footer class="toolbar bottom">
+        <div class="progress task-progress" role="progressbar" aria-label="Task completion progress"></div>
+        <div id="currentTask" class="current-task"></div>
+        <div class="media-controls">
+            <button id="playPause" aria-label="Play/Pause">▶</button>
+            <button id="nextTask" aria-label="Next Task">⏭</button>
+        </div>
+    </footer>
 
     <script src="/static/app.js"></script>
 </body>

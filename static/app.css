@@ -1,25 +1,75 @@
 :root {
+    /* Layout */
     --toolbar-height: 60px;
+    --sidebar-width: 250px;
+
+    /* Light theme colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Task status colors - Light */
+    --task-pending: #f5f5f5;
+    --task-current: #e3f2fd;
+    --task-done: #e8f5e9;
+    --task-overdue: #fff3e0;
+
+    /* Progress bars - Light */
+    --progress-bg: #e0e0e0;
+    --progress-day: #2196f3;
+    --progress-tasks: #4caf50;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark theme colors */
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --border-color: #404040;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+
+        /* Task status colors - Dark */
+        --task-pending: #2d2d2d;
+        --task-current: #1a365d;
+        --task-done: #1b4d1b;
+        --task-overdue: #4d3319;
+
+        /* Progress bars - Dark */
+        --progress-bg: #404040;
+        --progress-day: #1976d2;
+        --progress-tasks: #388e3c;
+    }
+}
+
+/* Base styles */
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
+/* Toolbars */
 .toolbar {
     position: fixed;
     left: 0;
     right: 0;
     height: var(--toolbar-height);
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: var(--bg-primary);
+    box-shadow: 0 0 10px var(--shadow-color);
     display: flex;
     align-items: center;
     padding: 0 1rem;
+    z-index: 100;
 }
 
 .toolbar.top {
@@ -30,25 +80,141 @@ body {
     bottom: 0;
 }
 
-main {
+/* Progress bars */
+.progress {
+    position: absolute;
+    left: 0;
+    height: 4px;
+    background: var(--progress-bg);
+    transition: width 0.3s ease;
+}
+
+.day-progress {
+    bottom: 0;
+    background-color: var(--progress-day);
+}
+
+.task-progress {
+    top: 0;
+    background-color: var(--progress-tasks);
+}
+
+/* Main content */
+.task-list {
     margin: var(--toolbar-height) 0;
     padding: 1rem;
     flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
+/* Tasks */
+.task {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--task-pending);
+    transition: all 0.3s ease;
+}
+
+.task.current {
+    background: var(--task-current);
+}
+
+.task.done {
+    background: var(--task-done);
+}
+
+.task.overdue {
+    background: var(--task-overdue);
+}
+
+.task .time {
+    font-weight: bold;
+    min-width: 4rem;
+}
+
+.task .duration {
+    color: var(--text-secondary);
+    margin-left: auto;
+}
+
+/* Sidebar */
 .sidebar {
     position: fixed;
     top: var(--toolbar-height);
     bottom: 0;
-    left: -250px;
-    width: 250px;
-    background: #fff;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    left: calc(-1 * var(--sidebar-width));
+    width: var(--sidebar-width);
+    background: var(--bg-primary);
+    box-shadow: 2px 0 10px var(--shadow-color);
     transition: left 0.3s ease;
     padding: 1rem;
+    z-index: 99;
 }
 
 .sidebar.open {
     left: 0;
+}
+
+/* Buttons */
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Media controls */
+.media-controls {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+/* Current task display */
+.current-task {
+    flex: 1;
+    margin: 0 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+    .task .time {
+        min-width: 3rem;
+        font-size: 0.9em;
+    }
+
+    .task .duration {
+        font-size: 0.9em;
+    }
+
+    button {
+        padding: 0.5rem;
+    }
+}
+
+/* Touch interactions */
+@media (hover: none) {
+    .task {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+        min-height: 44px;
+        /* iOS minimum tap target size */
+    }
 }
