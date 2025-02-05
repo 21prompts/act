@@ -65,6 +65,8 @@ function showAddTaskModal() {
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     document.getElementById('taskTime').value = timeStr;
+    document.getElementById('durationSlider').value = 30;
+    updateDurationFromSlider(30);
 }
 
 function closeAddTaskModal() {
@@ -78,16 +80,21 @@ document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
 
     const task = {
         time: document.getElementById('taskTime').value,
-        name: document.getElementById('taskName').value,
+        name: document.getElementById('taskName').value.trim(),
         duration: document.getElementById('taskDuration').value,
         done: false,
         current: false
     };
 
+    if (!task.name) return;
+
     state.tasks.push(task);
     await saveTasks(state.currentDate);
     closeAddTaskModal();
     renderTasks();
+
+    // Reset form
+    e.target.reset();
 });
 
 // Button handlers
@@ -247,3 +254,44 @@ setInterval(updateProgress, 60000); // Update progress every minute
 // Initialize clock
 updateDateTime();
 setInterval(updateDateTime, 1000);
+
+// Duration controls
+function updateDurationFromSlider(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    let durationText = '';
+
+    if (hours > 0) {
+        durationText = hours + (mins > 0 ? `.${Math.floor((mins / 60) * 10)}` : '') + 'hr';
+    } else {
+        durationText = mins + 'min';
+    }
+
+    document.getElementById('taskDuration').value = durationText;
+    document.getElementById('durationDisplay').textContent = `${minutes} min`;
+}
+
+function updateSliderFromDuration(text) {
+    const hrMatch = text.match(/^(\d+(?:\.\d+)?)hr$/);
+    const minMatch = text.match(/^(\d+)min$/);
+    let minutes = 30; // default
+
+    if (hrMatch) {
+        minutes = Math.round(parseFloat(hrMatch[1]) * 60);
+    } else if (minMatch) {
+        minutes = parseInt(minMatch[1]);
+    }
+
+    minutes = Math.min(Math.max(minutes, 5), 180);
+    document.getElementById('durationSlider').value = minutes;
+    document.getElementById('durationDisplay').textContent = `${minutes} min`;
+}
+
+// Event listeners for duration controls
+document.getElementById('durationSlider').addEventListener('input', (e) => {
+    updateDurationFromSlider(parseInt(e.target.value));
+});
+
+document.getElementById('taskDuration').addEventListener('change', (e) => {
+    updateSliderFromDuration(e.target.value);
+});

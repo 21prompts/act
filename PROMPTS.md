@@ -146,3 +146,18 @@ Next, let's focus on designing the top toolbar:
 Then, implement the functionality for buttons in top toolbar (menu and add task)
 
 Finally, ensure the sidebar is completely hidden until opened (I can see it partially on left edge)
+
+## Prompt 8
+
+Focus on the aesthetics and usability of task add modal:
+
+- time to start should have 24 hr format
+- task name should be on its own line so it is not too narrow
+- eta should have both a text input and a slider
+  - the slider starts at 5min and goes up to 3hr
+  - updating the text input should update the slider
+  - changing the slider should update the input text
+- add task should be on right, in primary color
+- cancel should be on left, in grey color
+
+Next, review the checklist in tasks.md and implement the task add feature both on frontend and backend.
