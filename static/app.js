@@ -322,24 +322,33 @@ document.getElementById('playPause').addEventListener('click', () => {
     }
 });
 
-// Add next task button handler
+// New helper: complete current task and advance to the next incomplete task
+function completeAndAdvanceTask(currentIndex) {
+    toggleTaskCompletion(currentIndex, true);
+    let nextIndex = -1;
+    for (let i = currentIndex + 1; i < state.tasks.length; i++) {
+        if (!state.tasks[i].done) {
+            nextIndex = i;
+            break;
+        }
+    }
+    if (nextIndex === -1) {
+        // No more incomplete tasks: reset UI state and stop timer
+        stopTaskTimer();
+        document.getElementById('playPause').textContent = '▶';
+        state.currentTask = null;
+        document.getElementById('currentTask').textContent = '';
+    } else {
+        handleTaskClick(nextIndex);
+    }
+}
+
+// Modified next task button handler
 document.getElementById('nextTask').addEventListener('click', () => {
     if (!state.currentTask) return;
-
     const currentIndex = state.tasks.findIndex(t => t.current);
     if (currentIndex >= 0) {
-        toggleTaskCompletion(currentIndex, true);
-
-        // Move to next task if available
-        if (currentIndex < state.tasks.length - 1) {
-            handleTaskClick(currentIndex + 1);
-        } else {
-            // Reset play button state when no more tasks
-            document.getElementById('playPause').textContent = '▶';
-            stopTaskTimer();
-            state.currentTask = null;
-            document.getElementById('currentTask').textContent = '';
-        }
+        completeAndAdvanceTask(currentIndex);
     }
 });
 

@@ -229,3 +229,9 @@ When clicking next after last pending task, the pause button should reset to "pl
 ### Prompt 10.2
 
 When user clicks on another task while a task is current and 'playing', pause the timer, update time it took so far in the task list and then load the task that was tapped. Use <thinking></thinking> to take a close look at the possible interactions and try to adapt the code for the edge cases as well.
+
+### Prompt 11
+
+When next task is already completed and I tap on the next button to mark current task as complete, and there are no more tasks to do - the play/pause button and current task state should reset.
+
+Use <thinking></thinking> to assess the potential edge cases similar to this and solve it with an elegant solution. We need to preserve existing functionality that isn't broken.
