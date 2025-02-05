@@ -43,11 +43,11 @@
   - [x] Date display
   - [x] Add task button
   - [x] Day progress bar
-- [ ] Bottom Toolbar
+- [x] Bottom Toolbar
   - [x] Task progress bar
   - [x] Current task display
-  - [ ] Play/pause controls
-  - [ ] Media API integration
+  - [x] Play/pause controls
+  - [x] Media API integration
 - [x] Task List
   - [x] Task item component
   - [x] Task status colors
@@ -82,4 +82,7 @@
 - [ ] Unit tests for backend
 - [ ] E2E tests for frontend
 - [ ] Performance optimization
+  - [ ] Add task duration tracking
+  - [ ] Implement task timing statistics
+  - [ ] Cache commonly used templates
 - [x] Mobile responsiveness

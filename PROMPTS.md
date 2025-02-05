@@ -210,3 +210,22 @@ app.js:93:5
     <anonymous> <http://127.0.0.1:8080/static/app.js:93>
     (Async: EventListener.handleEvent)
     <anonymous> <http://127.0.0.1:8080/static/app.js:79>
+
+## Prompt 10
+
+Let's review tasks.md to check off completed tasks and handle the missing functionality:
+
+- tapping/clicking on the checkbox should toggle the task's completion status
+- tapping on the task element (name and the container) should continue to load the task as current
+- tapping play should show a time counter to the right of current task
+- tapping the checkbox or next button when a task is current should update the estimated duration of the task in tasklist with actual time taken
+
+What other things did I miss? Refer to prompts.md for the initial prompt at the top.
+
+### Prompt 10.1
+
+When clicking next after last pending task, the pause button should reset to "play" state.
+
+### Prompt 10.2
+
+When user clicks on another task while a task is current and 'playing', pause the timer, update time it took so far in the task list and then load the task that was tapped. Use <thinking></thinking> to take a close look at the possible interactions and try to adapt the code for the edge cases as well.

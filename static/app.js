@@ -83,6 +83,7 @@ document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
         time: document.getElementById('taskTime').value,
         name: document.getElementById('taskName').value.trim(),
         duration: document.getElementById('taskDuration').value,
+        elapsedTime: 0, // Add elapsed time tracking
         done: false,
         current: false
     };
@@ -196,18 +197,44 @@ function updateProgress() {
 // Task interactions
 async function handleTaskClick(index) {
     const task = state.tasks[index];
-    if (formatDate(state.currentDate) === formatDate(new Date())) {
-        // Today's view - select as current
-        state.currentTask = task;
-        state.tasks.forEach(t => t.current = false);
-        task.current = true;
-        document.getElementById('currentTask').textContent = task.name;
-        updateMediaSession(task);
-    } else {
-        // Past/Future view - enable editing
+
+    if (formatDate(state.currentDate) !== formatDate(new Date())) {
         enableTaskEdit(index);
+        return;
     }
+
+    // Handle checkbox clicks
+    if (event.target.type === 'checkbox') {
+        toggleTaskCompletion(index, event.target.checked);
+        return;
+    }
+
+    // Don't switch if clicking the same current task
+    if (task.current) return;
+
+    // Save progress of current task if timer is running
+    if (state.currentTask?.current && taskTimer.interval) {
+        const currentIndex = state.tasks.findIndex(t => t.current);
+        if (currentIndex >= 0) {
+            const totalElapsed = taskTimer.accumulated + taskTimer.elapsed;
+            state.tasks[currentIndex].elapsedTime = totalElapsed;
+            state.tasks[currentIndex].duration = `${Math.ceil(totalElapsed / 60)}min`;
+        }
+        stopTaskTimer();
+        document.getElementById('playPause').textContent = '▶';
+    }
+
+    // Switch to new task
+    if (state.currentTask) {
+        state.currentTask.current = false;
+    }
+    state.currentTask = task;
+    state.tasks.forEach(t => t.current = false);
+    task.current = true;
+    document.getElementById('currentTask').textContent = task.name;
+    updateMediaSession(task);
     renderTasks();
+    await saveTasks(state.currentDate);
 }
 
 function handleTaskLongPress(event, index) {
@@ -244,16 +271,24 @@ document.addEventListener('touchstart', e => {
     touchStart = e.touches[0].clientX;
 });
 
-document.addEventListener('touchend', e => {
+document.addEventListener('touchend', async e => {
     if (!touchStart) return;
 
     const touchEnd = e.changedTouches[0].clientX;
     const diff = touchEnd - touchStart;
 
-    if (Math.abs(diff) > 100) { // Min swipe distance
-        if (diff > 0) { // Right swipe - previous day
+    if (Math.abs(diff) > 100) {
+        if (state.currentTask?.current && taskTimer.interval) {
+            const elapsed = Math.ceil((Date.now() - taskTimer.startTime) / 60000);
+            state.currentTask.duration = `${elapsed}min`;
+            stopTaskTimer();
+            document.getElementById('playPause').textContent = '▶';
+            await saveTasks(state.currentDate);
+        }
+
+        if (diff > 0) {
             state.currentDate.setDate(state.currentDate.getDate() - 1);
-        } else { // Left swipe - next day
+        } else {
             state.currentDate.setDate(state.currentDate.getDate() + 1);
         }
         loadTasks(state.currentDate);
@@ -263,15 +298,48 @@ document.addEventListener('touchend', e => {
 
 // Initialize
 document.getElementById('todayLink').addEventListener('click', () => {
+    if (state.currentTask?.current && taskTimer.interval) {
+        const elapsed = Math.ceil((Date.now() - taskTimer.startTime) / 60000);
+        state.currentTask.duration = `${elapsed}min`;
+        stopTaskTimer();
+        document.getElementById('playPause').textContent = '▶';
+        saveTasks(state.currentDate);
+    }
     state.currentDate = new Date();
     loadTasks(state.currentDate);
 });
 
 document.getElementById('playPause').addEventListener('click', () => {
     if (state.currentTask) {
-        // Toggle play state
         const button = document.getElementById('playPause');
-        button.textContent = button.textContent === '▶' ? '⏸' : '▶';
+        if (button.textContent === '▶') {
+            button.textContent = '⏸';
+            startTaskTimer();
+        } else {
+            button.textContent = '▶';
+            stopTaskTimer();
+        }
+    }
+});
+
+// Add next task button handler
+document.getElementById('nextTask').addEventListener('click', () => {
+    if (!state.currentTask) return;
+
+    const currentIndex = state.tasks.findIndex(t => t.current);
+    if (currentIndex >= 0) {
+        toggleTaskCompletion(currentIndex, true);
+
+        // Move to next task if available
+        if (currentIndex < state.tasks.length - 1) {
+            handleTaskClick(currentIndex + 1);
+        } else {
+            // Reset play button state when no more tasks
+            document.getElementById('playPause').textContent = '▶';
+            stopTaskTimer();
+            state.currentTask = null;
+            document.getElementById('currentTask').textContent = '';
+        }
     }
 });
 
@@ -355,3 +423,66 @@ document.getElementById('taskDuration').addEventListener('change', (e) => {
 document.getElementById('taskDuration').addEventListener('blur', (e) => {
     updateSliderFromDuration(e.target.value);
 });
+
+// Task timing state
+const taskTimer = {
+    startTime: null,
+    interval: null,
+    elapsed: 0,
+    accumulated: 0 // Add accumulated time tracking
+};
+
+// Update task completion
+function toggleTaskCompletion(index, completed) {
+    const task = state.tasks[index];
+    task.done = completed;
+
+    if (task.current && completed) {
+        if (taskTimer.interval) {
+            const totalElapsed = taskTimer.accumulated + taskTimer.elapsed;
+            task.duration = `${Math.ceil(totalElapsed / 60)}min`;
+            stopTaskTimer();
+        } else if (task.elapsedTime) {
+            task.duration = `${Math.ceil(task.elapsedTime / 60)}min`;
+        }
+    }
+
+    saveTasks(state.currentDate);
+    renderTasks();
+    updateProgress();
+}
+
+// Task timer functions
+function startTaskTimer() {
+    if (!state.currentTask) return;
+
+    taskTimer.startTime = Date.now();
+    taskTimer.elapsed = 0;
+    taskTimer.accumulated = state.currentTask.elapsedTime || 0; // Resume from previous elapsed time
+
+    taskTimer.interval = setInterval(() => {
+        taskTimer.elapsed = Math.floor((Date.now() - taskTimer.startTime) / 1000);
+        const totalElapsed = taskTimer.accumulated + taskTimer.elapsed;
+        state.currentTask.elapsedTime = totalElapsed;
+        updateTimerDisplay(totalElapsed);
+    }, 1000);
+}
+
+function stopTaskTimer() {
+    if (taskTimer.interval) {
+        // Save accumulated time when stopping
+        if (state.currentTask) {
+            state.currentTask.elapsedTime = taskTimer.accumulated + taskTimer.elapsed;
+        }
+        clearInterval(taskTimer.interval);
+        taskTimer.interval = null;
+    }
+}
+
+function updateTimerDisplay(totalSeconds) {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    document.getElementById('currentTask').textContent =
+        `${state.currentTask?.name} (${display})`;
+}
