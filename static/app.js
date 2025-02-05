@@ -124,6 +124,33 @@ async function loadTasks(date) {
     updateProgress();
 }
 
+// Save tasks to server
+async function saveTasks(date) {
+    try {
+        const response = await fetch(`/api/tasks/${formatDate(date)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(state.tasks)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // If offline, register for background sync
+        if (!navigator.onLine) {
+            const registration = await navigator.serviceWorker.ready;
+            await registration.sync.register('sync-tasks');
+        }
+    } catch (error) {
+        console.error('Error saving tasks:', error);
+        // Store changes locally for later sync
+        await storePendingChange(date, state.tasks);
+    }
+}
+
 // UI Updates
 function renderTasks() {
     const list = document.getElementById('taskList');

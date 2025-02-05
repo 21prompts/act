@@ -29,6 +29,18 @@ func NewServer(dataDir string) (*Server, error) {
 		},
 	}
 
+	// Add CSP middleware
+	s.Router.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Security-Policy",
+				"default-src 'self'; "+
+					"script-src 'self' 'unsafe-inline'; "+
+					"style-src 'self' 'unsafe-inline'; "+
+					"worker-src 'self';")
+			next.ServeHTTP(w, r)
+		})
+	})
+
 	// Initialize task manager
 	tasks, err := NewTaskManager(dataDir)
 	if err != nil {
@@ -40,6 +52,15 @@ func NewServer(dataDir string) (*Server, error) {
 	s.Router.PathPrefix("/static/").Handler(
 		http.StripPrefix("/static/",
 			http.FileServer(http.Dir("static"))))
+
+	// Root-level static files
+	s.Router.HandleFunc("/sw.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Service-Worker-Allowed", "/")
+		http.ServeFile(w, r, "static/sw.js")
+	})
+	s.Router.HandleFunc("/manifest.json", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/manifest.json")
+	})
 
 	// API routes
 	api := s.Router.PathPrefix("/api").Subrouter()

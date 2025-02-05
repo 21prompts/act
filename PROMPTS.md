@@ -181,3 +181,32 @@ When I type "17min" in duration input and focus is blurred when I tab out / clic
 ### Prompt 8.4
 
 Review the code written so far and check off all completed tasks in tasks.md
+
+## Prompt 9
+
+Let's fix this error that the browser console is displaying:
+
+```
+Content-Security-Policy: (Report-Only policy) The page’s settings would block a worker script (worker-src) at http://127.0.0.1:8080/static/sw.js from being executed because it violates the following directive: “worker-src 'none'” 127.0.0.1:8080
+ServiceWorker registration failed: TypeError: ServiceWorker script at http://127.0.0.1:8080/static/sw.js for scope http://127.0.0.1:8080/static/ encountered an error during installation. app.js:5:31
+Uncaught (in promise) ReferenceError: saveTasks is not defined
+    <anonymous> http://127.0.0.1:8080/static/app.js:93
+```
+
+Ensure manifest.json and service worker sw.js are served from "/manifest.json" and "/sw.js".
+
+Also, fix the CSP headers to allow service worker.
+
+### Prompt 9.1
+
+Let's create the missing sw.js and manifest.json files.
+
+### Prompt 9.2
+
+Uncaught (in promise) ReferenceError: saveTasks is not defined
+    <anonymous> <http://127.0.0.1:8080/static/app.js:93>
+    EventListener.handleEvent* <http://127.0.0.1:8080/static/app.js:79>
+app.js:93:5
+    <anonymous> <http://127.0.0.1:8080/static/app.js:93>
+    (Async: EventListener.handleEvent)
+    <anonymous> <http://127.0.0.1:8080/static/app.js:79>
