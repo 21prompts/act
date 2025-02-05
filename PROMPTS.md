@@ -161,3 +161,23 @@ Focus on the aesthetics and usability of task add modal:
 - cancel should be on left, in grey color
 
 Next, review the checklist in tasks.md and implement the task add feature both on frontend and backend.
+
+### Prompt 8.1
+
+Let's set up the eta slider in discrete steps when manually changed, but smooth when text-input's change is reflected:
+
+5, 10, 15, 20, 30, 45, 60, 90, 120, 150, 180
+
+This will make it easy to slide and pick a standard slot of time.
+
+### Prompt 8.2
+
+The elements "duration" and "durationDisplay" should update when slider is changed. They are currently not updating.
+
+### Prompt 8.3
+
+When I type "17min" in duration input and focus is blurred when I tab out / click elsewhere, the slider should update automatically. Round off the input to closest time slot in datalist.
+
+### Prompt 8.4
+
+Review the code written so far and check off all completed tasks in tasks.md

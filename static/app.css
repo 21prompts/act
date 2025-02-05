@@ -279,9 +279,42 @@ button:hover {
     gap: 0.75rem;
 }
 
+/* Duration slider customization */
 #durationSlider {
     width: 100%;
     accent-color: var(--progress-day);
+    margin: 0.5rem 0;
+}
+
+#durationSlider::-webkit-slider-thumb {
+    cursor: pointer;
+}
+
+/* Style datalist markers */
+#durationSlider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, var(--border-color) 0%, var(--border-color) 100%) no-repeat center;
+    background-size: 100% 2px;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    writing-mode: horizontal-tb;
+    width: 100%;
+}
+
+datalist option {
+    padding: 0;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    datalist option {
+        color: var(--text-secondary);
+    }
 }
 
 #durationDisplay {

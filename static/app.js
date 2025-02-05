@@ -65,8 +65,9 @@ function showAddTaskModal() {
     const now = new Date();
     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     document.getElementById('taskTime').value = timeStr;
-    document.getElementById('durationSlider').value = 30;
-    updateDurationFromSlider(30);
+    const defaultDuration = 30;
+    document.getElementById('durationSlider').value = defaultDuration;
+    updateDurationFromSlider(defaultDuration, true);
 }
 
 function closeAddTaskModal() {
@@ -255,14 +256,30 @@ setInterval(updateProgress, 60000); // Update progress every minute
 updateDateTime();
 setInterval(updateDateTime, 1000);
 
+const DURATION_STEPS = [5, 10, 15, 20, 30, 45, 60, 90, 120, 150, 180];
+
 // Duration controls
-function updateDurationFromSlider(minutes) {
+function updateDurationFromSlider(minutes, snap = true) {
+    if (snap) {
+        // Find closest step
+        minutes = DURATION_STEPS.reduce((prev, curr) =>
+            Math.abs(curr - minutes) < Math.abs(prev - minutes) ? curr : prev
+        );
+        document.getElementById('durationSlider').value = minutes;
+    }
+
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     let durationText = '';
 
     if (hours > 0) {
-        durationText = hours + (mins > 0 ? `.${Math.floor((mins / 60) * 10)}` : '') + 'hr';
+        if (mins === 0) {
+            durationText = hours + 'hr';
+        } else if (mins === 30) {
+            durationText = hours + '.5hr';
+        } else {
+            durationText = mins + 'min';
+        }
     } else {
         durationText = mins + 'min';
     }
@@ -280,18 +297,34 @@ function updateSliderFromDuration(text) {
         minutes = Math.round(parseFloat(hrMatch[1]) * 60);
     } else if (minMatch) {
         minutes = parseInt(minMatch[1]);
+    } else {
+        // Try to parse just the number
+        const numMatch = text.match(/^(\d+(?:\.\d+)?)$/);
+        if (numMatch) {
+            minutes = parseInt(numMatch[1]);
+        }
     }
 
     minutes = Math.min(Math.max(minutes, 5), 180);
-    document.getElementById('durationSlider').value = minutes;
-    document.getElementById('durationDisplay').textContent = `${minutes} min`;
+    // Always snap on blur/change to maintain consistent steps
+    updateDurationFromSlider(minutes, true);
 }
 
 // Event listeners for duration controls
 document.getElementById('durationSlider').addEventListener('input', (e) => {
-    updateDurationFromSlider(parseInt(e.target.value));
+    const minutes = parseInt(e.target.value);
+    updateDurationFromSlider(minutes, true);
+});
+
+document.getElementById('durationSlider').addEventListener('change', (e) => {
+    const minutes = parseInt(e.target.value);
+    updateDurationFromSlider(minutes, true);
 });
 
 document.getElementById('taskDuration').addEventListener('change', (e) => {
+    updateSliderFromDuration(e.target.value);
+});
+
+document.getElementById('taskDuration').addEventListener('blur', (e) => {
     updateSliderFromDuration(e.target.value);
 });
