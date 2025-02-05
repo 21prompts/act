@@ -96,3 +96,28 @@ Mark the tasks completed so far in tasks.md and then implement the remaining met
 ### Prompt 3.1
 
 server.go:118 declared and not used: path compiler UnusedVar
+
+## Prompt 4
+
+The templates for daily tasks will be in the format:
+
+```
+# Template Name
+
+- [ ] 07:00 Feed the cats (15min)
+- [ ] 07:30 Feed the dogs (20min)
+- [ ] 08:00 Farm work
+- [ ] 11:00 Cook food (1.5hr)
+- [ ] 12:30 Lunch (30min)
+- [ ] 14:00 Farm work
+- [ ] 18:00 Feed the dogs (20min)
+- [ ] 18:30 Feed the cats (15min)
+```
+
+Create a parser/write for this format, pay attention to how the ETA is formatted: "20min", "1.5hr" etc and that we are using 24 hour format with leading zero for when to start the task "07:00", "14:00" etc.
+
+Consult tasks.md for specifics as discussed in initial prompt.
+
+### Prompt 4.1
+
+tasks.go:38 declared and not used: inTaskList compiler UnusedVar
