@@ -2,12 +2,12 @@
 
 Self-hosted Daily Routine Checklist
 
-Note:
+## 21 Prompts?
 
-Paused working on this after 4+ hours of Github Copilot issues:
+Holler was created in a matter of hours during a handful sessions of using Github Copilot with Anthropic's Claude 3.5 Sonnet model. You'll find every prompt used to get to this point in PROMPTS.md.
 
-<https://github.com/microsoft/vscode-copilot-release/issues/4644>
+This is not production-ready software, it is a curiosity or a toy.
 
-This intermittent outage is a recurring issue and some days it starts working in an hour or two, some days like today, it continues well past my patience threshold.
+## Status
 
-Copilot can be quite a useful tool - if/when it works. Today is not the day it does though.
+Kinda-sorta works, if you squint a little. Has major usability issues that I was unable to resolve via prompts. I might give this another try with a different prompting strategy later.
