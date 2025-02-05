@@ -67,3 +67,24 @@ The markdown files will be stored in "data/" dir in cwd.
 The app will be a go web server "server.go" written using gorilla/mux, that is started via cli "main.go". The UI is provided by index.html, app.css and app.js, served from "static/" dir. We want the client to be a PWA which can work offline and sync the markdown files with server. The server will expose API endpoints to sync files.
 
 Take notes in <thinking></thinking> about the tasks that need to be done to set up this project, then populate "tasks.md" with the checklist that we will follow to implement this app.
+
+## Prompt 2
+
+Next, we want to set up the project structure:
+
+- project root
+  - main.go
+  - server.go
+  - tasks.go
+  - static/
+    - index.html
+    - app.js
+    - app.css
+    - sw.js
+    - manifest.json
+
+Here, tasks.go will provide the API to manage tasks, parse and write markdown checklists etc.
+
+We will ensure that refreshing cached PWA assets is possible from the sidebar via a "refresh" button.
+
+Refer to tasks.md for what goes into each file.

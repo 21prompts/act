@@ -1,0 +1,54 @@
+:root {
+    --toolbar-height: 60px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--toolbar-height);
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.toolbar.top {
+    top: 0;
+}
+
+.toolbar.bottom {
+    bottom: 0;
+}
+
+main {
+    margin: var(--toolbar-height) 0;
+    padding: 1rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: var(--toolbar-height);
+    bottom: 0;
+    left: -250px;
+    width: 250px;
+    background: #fff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    padding: 1rem;
+}
+
+.sidebar.open {
+    left: 0;
+}
