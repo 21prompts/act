@@ -121,3 +121,7 @@ Consult tasks.md for specifics as discussed in initial prompt.
 ### Prompt 4.1
 
 tasks.go:38 declared and not used: inTaskList compiler UnusedVar
+
+## Prompt 5
+
+Check off the completed tasks in tasks.md and ensure we are using functions from tasks.go in server.go. Finally, implement the remaining functionality for app.js.

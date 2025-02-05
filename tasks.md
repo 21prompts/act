@@ -17,13 +17,13 @@
 ### Backend Development
 
 - [x] Implement file operations for markdown files
-- [ ] Create API endpoints:
+- [x] Create API endpoints:
   - [x] GET /api/tasks/{date} - Get tasks for date
   - [x] POST /api/tasks/{date} - Save tasks for date
   - [x] GET /api/templates - List available templates
   - [x] GET /api/templates/{name} - Get specific template
 - [x] Add WebSocket support for real-time sync
-- [ ] Implement template management
+- [x] Implement template management
 
 ### Frontend Core
 
