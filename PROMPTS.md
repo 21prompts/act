@@ -129,3 +129,20 @@ Check off the completed tasks in tasks.md and ensure we are using functions from
 ## Prompt 6
 
 Let's review the index.html and app.css files and ensure we have a clean layout and design that is mobile-first and supports automatic light/dark themes.
+
+## Prompt 7
+
+Next, let's focus on designing the top toolbar:
+
+- fixed toolbar at top
+  - menu button to toggle sidebar (left)
+  - current day in the format "12:34 Tue, 5 Feb"
+  - "+" button to add task (right)
+  - "day-progress" widget
+    - full-width progress bar at the bottom of the toolbar
+    - begins at 00:00 and ends at 23:59
+    - displays progress of the day using current time
+
+Then, implement the functionality for buttons in top toolbar (menu and add task)
+
+Finally, ensure the sidebar is completely hidden until opened (I can see it partially on left edge)

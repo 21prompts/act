@@ -68,16 +68,29 @@ body {
     box-shadow: 0 0 10px var(--shadow-color);
     display: flex;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0;
     z-index: 100;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .toolbar.top {
     top: 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 0 0.5rem;
+    gap: 1rem;
 }
 
 .toolbar.bottom {
     bottom: 0;
+}
+
+.toolbar time {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
 }
 
 /* Progress bars */
@@ -87,10 +100,13 @@ body {
     height: 4px;
     background: var(--progress-bg);
     transition: width 0.3s ease;
+    width: 0;
 }
 
 .day-progress {
-    bottom: 0;
+    bottom: -1px;
+    /* Align with border */
+    height: 2px;
     background-color: var(--progress-day);
 }
 
@@ -154,9 +170,12 @@ body {
     transition: left 0.3s ease;
     padding: 1rem;
     z-index: 99;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
 }
 
 .sidebar.open {
+    transform: translateX(0);
     left: 0;
 }
 
@@ -173,6 +192,57 @@ button {
 
 button:hover {
     opacity: 0.8;
+}
+
+/* Action buttons */
+.toolbar button {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border-radius: 50%;
+}
+
+.toolbar button:hover {
+    background: var(--bg-secondary);
+}
+
+/* Modal for adding tasks */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-primary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    display: none;
+}
+
+.modal.open {
+    display: block;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.modal-backdrop.open {
+    display: block;
 }
 
 /* Media controls */

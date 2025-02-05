@@ -34,6 +34,76 @@ const state = {
     currentTask: null
 };
 
+// Date formatting
+function formatDateTime(date) {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+
+    return `${hours}:${minutes} ${dayName}, ${day} ${month}`;
+}
+
+// Update current time
+function updateDateTime() {
+    const now = new Date();
+    const timeElement = document.getElementById('currentDate');
+    timeElement.textContent = formatDateTime(now);
+    timeElement.setAttribute('datetime', now.toISOString());
+}
+
+// Add task modal
+function showAddTaskModal() {
+    document.getElementById('addTaskModal').classList.add('open');
+    document.getElementById('modalBackdrop').classList.add('open');
+
+    // Set current time as default
+    const now = new Date();
+    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    document.getElementById('taskTime').value = timeStr;
+}
+
+function closeAddTaskModal() {
+    document.getElementById('addTaskModal').classList.remove('open');
+    document.getElementById('modalBackdrop').classList.remove('open');
+}
+
+// Add task form handler
+document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const task = {
+        time: document.getElementById('taskTime').value,
+        name: document.getElementById('taskName').value,
+        duration: document.getElementById('taskDuration').value,
+        done: false,
+        current: false
+    };
+
+    state.tasks.push(task);
+    await saveTasks(state.currentDate);
+    closeAddTaskModal();
+    renderTasks();
+});
+
+// Button handlers
+document.getElementById('addTask').addEventListener('click', showAddTaskModal);
+document.getElementById('modalBackdrop').addEventListener('click', closeAddTaskModal);
+
+// Sidebar
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('menu');
+    const menuBtn = document.getElementById('menuBtn');
+
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target) && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+    }
+});
+
 // Date navigation
 function formatDate(date) {
     return date.toISOString().split('T')[0];
@@ -173,3 +243,7 @@ document.getElementById('playPause').addEventListener('click', () => {
 // Initial load
 loadTasks(state.currentDate);
 setInterval(updateProgress, 60000); // Update progress every minute
+
+// Initialize clock
+updateDateTime();
+setInterval(updateDateTime, 1000);

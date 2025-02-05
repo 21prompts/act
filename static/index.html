@@ -28,6 +28,18 @@
         <!-- Tasks will be inserted here -->
     </main>
 
+    <div id="addTaskModal" class="modal">
+        <h2>Add New Task</h2>
+        <form id="addTaskForm">
+            <input type="time" id="taskTime" required>
+            <input type="text" id="taskName" placeholder="Task name" required>
+            <input type="text" id="taskDuration" placeholder="Duration (e.g., 30min, 1.5hr)">
+            <button type="submit">Add Task</button>
+            <button type="button" onclick="closeAddTaskModal()">Cancel</button>
+        </form>
+    </div>
+    <div id="modalBackdrop" class="modal-backdrop"></div>
+
     <footer class="toolbar bottom">
         <div class="progress task-progress" role="progressbar" aria-label="Task completion progress"></div>
         <div id="currentTask" class="current-task"></div>
