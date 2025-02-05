@@ -53,6 +53,9 @@
   - [ ] Task status colors
   - [ ] Inline editing
   - [ ] Gesture controls
+- [ ] Menu
+  - [ ] "Today" link to navigate to today's tasks
+  - [ ] "Refresh" button to reload cached PWA assets
 
 ### Gestures & Interactions
 
