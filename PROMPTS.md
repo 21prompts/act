@@ -171,3 +171,7 @@ When I run the app with --debug, I get no output and the server isn't running.
 09:25:57 server.1 | ./main.go:13:2: debug redeclared in this block
 09:25:57 server.1 | 	./db.go:12:5: other declaration of debug
 09:25:57 system   | server.1 stopped (rc=1)
+
+## Prompt 6
+
+Analyze the code we have so far. What do we need to do to get the weather data from api to show up as icons in the frontend task list? Use <thinking></thinking> to take notes and then implement an elegant solution.

@@ -159,8 +159,8 @@ class WeatherManager {
             const weather = data.find(w => w.hour === hour);
             if (weather) {
                 const icon = slot.querySelector('.weather-icon');
-                icon.src = `icons/filled/${weather.data}.svg`;
-                icon.alt = weather.description || '';
+                icon.src = `icons/filled/${weather.data.icon}.svg`;
+                icon.alt = weather.data.description;
             }
         });
     }

@@ -35,6 +35,39 @@ func NewWeatherService(db *DB) (*WeatherService, error) {
 	}, nil
 }
 
+type WeatherData struct {
+	Icon        string `json:"icon"`
+	Description string `json:"description"`
+}
+
+type Weather struct {
+	Date string      `json:"date"`
+	Hour int         `json:"hour"`
+	Data WeatherData `json:"data"`
+}
+
+// Map OpenWeather icons to Material Design icons
+var weatherIconMap = map[string]string{
+	"01d": "light_mode",          // clear sky day
+	"01n": "dark_mode",           // clear sky night
+	"02d": "partly_cloudy_day",   // few clouds day
+	"02n": "partly_cloudy_night", // few clouds night
+	"03d": "cloud",               // scattered clouds
+	"03n": "cloud",
+	"04d": "cloud", // broken clouds
+	"04n": "cloud",
+	"09d": "rainy", // shower rain
+	"09n": "rainy",
+	"10d": "rainy", // rain
+	"10n": "rainy",
+	"11d": "thunderstorm", // thunderstorm
+	"11n": "thunderstorm",
+	"13d": "weather_snowy", // snow
+	"13n": "weather_snowy",
+	"50d": "foggy", // mist
+	"50n": "foggy",
+}
+
 func (ws *WeatherService) fetchWeatherData() error {
 	url := fmt.Sprintf("%s?lat=%f&lon=%f&appid=%s&units=metric&exclude=minutely,daily,alerts",
 		weatherAPIURL, ws.lat, ws.lon, ws.apiKey)
@@ -68,10 +101,20 @@ func (ws *WeatherService) fetchWeatherData() error {
 		dt := int64(hour["dt"].(float64))
 		t := time.Unix(dt, 0)
 
+		weatherData := hour["weather"].([]interface{})[0].(map[string]interface{})
+		iconCode := weatherData["icon"].(string)
+		materialIcon := weatherIconMap[iconCode]
+		if materialIcon == "" {
+			materialIcon = "cloud" // default icon
+		}
+
 		weather := &Weather{
 			Date: t.Format("2006-01-02"),
 			Hour: t.Hour(),
-			Data: json.RawMessage(hour["weather"].([]interface{})[0].(map[string]interface{})["icon"].(string)),
+			Data: WeatherData{
+				Icon:        materialIcon,
+				Description: weatherData["description"].(string),
+			},
 		}
 
 		if err := ws.db.SaveWeather(weather); err != nil {

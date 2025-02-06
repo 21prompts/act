@@ -30,9 +30,9 @@ type TaskLog struct {
 }
 
 type Weather struct {
-	Date string          `json:"date"`
-	Hour int             `json:"hour"`
-	Data json.RawMessage `json:"data"`
+	Date string      `json:"date"`
+	Hour int         `json:"hour"`
+	Data WeatherData `json:"data"`
 }
 
 func InitDB() (*DB, error) {
