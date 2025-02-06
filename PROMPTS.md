@@ -222,4 +222,10 @@ Let's remove the placeholder tasks and set up db.go, tasks.go, types.go, app.js 
 
 ### Prompt 7.1
 
-Why don't I see the hourly weather and 30 minute time slots? The should be present regardless of tasks.
+Why don't I see the hourly weather and 30 minute time slots? They should be present regardless of tasks.
+
+## Prompt 8
+
+Let's review our frontend and backend code and add a sidebar that is toggled when the menu button in toolbar is tapped/clicked.
+
+The sidebar will contain a form to add/edit tasks. Wire up with the backend api so we can add tasks with their start time and durations.

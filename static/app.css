@@ -245,3 +245,76 @@ button:focus {
         transition: none !important;
     }
 }
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100%;
+    background: var(--background-color);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-out;
+    z-index: 1000;
+}
+
+.sidebar[aria-hidden="false"] {
+    transform: translateX(300px);
+}
+
+.task-form {
+    padding: 20px;
+    margin-top: 60px;
+}
+
+.task-form h2 {
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 4px;
+    background: var(--input-background, #fff);
+    color: var(--text-color);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+button.primary {
+    --button-background: #4CAF50;
+}
+
+button.secondary {
+    --button-background: #9e9e9e;
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --border-color: #555;
+        --input-background: #333;
+    }
+}

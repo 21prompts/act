@@ -214,6 +214,52 @@ class WeatherManager {
     }
 }
 
+class SidebarManager {
+    constructor(taskManager) {
+        this.sidebar = document.getElementById('sidebar');
+        this.form = document.getElementById('task-form');
+        this.taskManager = taskManager;
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const menuButton = document.getElementById('menu-button');
+        const closeButton = document.getElementById('close-sidebar');
+        
+        menuButton.addEventListener('click', () => this.toggle());
+        closeButton.addEventListener('click', () => this.close());
+        
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    toggle() {
+        const isHidden = this.sidebar.getAttribute('aria-hidden') === 'true';
+        this.sidebar.setAttribute('aria-hidden', !isHidden);
+    }
+
+    close() {
+        this.sidebar.setAttribute('aria-hidden', 'true');
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this.form);
+        const task = {
+            name: formData.get('name'),
+            start_time: formData.get('start_time'),
+            duration: formData.get('duration'),
+            repeat: formData.get('repeat') || null
+        };
+
+        const success = await this.taskManager.createTask(task);
+        if (success) {
+            this.form.reset();
+            this.close();
+        }
+    }
+}
+
 class App {
     constructor() {
         this.debug = new URLSearchParams(window.location.search).has('debug');
@@ -225,6 +271,7 @@ class App {
         this.timeManager = new TimeManager();
         this.uiManager = new UIManager(this.taskManager);
         this.weatherManager = new WeatherManager();
+        this.sidebarManager = new SidebarManager(this.taskManager);
         
         this.uiManager.initialize();
     }
