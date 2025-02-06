@@ -1,10 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Initialize the date and time display
+    // Initialize the date and time display with minutes precision
     const dateTimeSpan = document.getElementById("date-time");
-    setInterval(() => {
+    function updateDateTime() {
         const now = new Date();
-        dateTimeSpan.textContent = now.toLocaleString();
-    }, 1000);
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        dateTimeSpan.textContent = now.toLocaleString(undefined, options);
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 60000); // Update every minute
 
     // Day progress calculation
     function updateDayProgress() {
@@ -13,16 +23,15 @@ document.addEventListener("DOMContentLoaded", function() {
         const progress = ((now - startOfDay) / (24 * 60 * 60 * 1000)) * 100;
         
         const progressBar = document.getElementById("day-progress-bar");
-        const progressFill = document.createElement("div");
-        progressFill.id = "day-progress-fill";
-        progressFill.style.width = `${progress}%`;
-        progressFill.setAttribute("role", "progressbar");
-        progressFill.setAttribute("aria-valuenow", Math.round(progress));
-        progressFill.setAttribute("aria-valuemin", "0");
-        progressFill.setAttribute("aria-valuemax", "100");
+        if (!progressBar.querySelector('#day-progress-fill')) {
+            const progressFill = document.createElement("div");
+            progressFill.id = "day-progress-fill";
+            progressBar.appendChild(progressFill);
+        }
         
-        progressBar.innerHTML = '';
-        progressBar.appendChild(progressFill);
+        const progressFill = progressBar.querySelector('#day-progress-fill');
+        progressFill.style.width = `${progress}%`;
+        progressFill.setAttribute("aria-valuenow", Math.round(progress));
     }
 
     // Update progress every minute

@@ -62,7 +62,10 @@ body {
     height: 100%;
     background-color: #4CAF50;
     width: 0%;
-    transition: width 1s linear;
+    transition: width 0.3s ease-out;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 /* Day View Styles */

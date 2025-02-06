@@ -83,6 +83,13 @@ Set up a colorful automatic light/dark theme with css variables and use a modern
 
 Ensure the frontend is mobile-first, accessible and easy to read in harsh light.
 
-## Prompt 1.2
+### Prompt 1.2
 
 Let's review the chat history and set up day progress and any other missing features.
+
+
+### Prompt 1.3
+
+The day progress bar does not seem to be correct, it should update every minute automatically for current time. 
+
+Also, let's remove the seconds display from current time. It is quite distracting.
