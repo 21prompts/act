@@ -74,3 +74,11 @@ For the backend we want the following data to be available through an api layer 
 For weather data we will use the openweathermap's onecall api (included in context). We will query the hourly forecasts once every 10 minutes and update the database.
 
 We want debug logging for both backend and frontend that can be configured via a cli flag "--debug".
+
+### Prompt 1.1
+
+Use basic css reset and box-sizing to ensure the ui design is consistent.
+
+Set up a colorful automatic light/dark theme with css variables and use a modern system-font stack.
+
+Ensure the frontend is mobile-first, accessible and easy to read in harsh light.
