@@ -97,6 +97,14 @@ body {
     object-fit: contain;
 }
 
+/* Material Icons */
+.material-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     #day-view {
@@ -108,6 +116,19 @@ body {
     #toolbar, #actionbar {
         font-size: 14px;
         padding: 8px;
+    }
+
+    .button-text {
+        display: none;
+    }
+    
+    button {
+        padding: 8px;
+        aspect-ratio: 1;
+    }
+    
+    .material-icon {
+        margin: 0;
     }
 }
 

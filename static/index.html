@@ -8,9 +8,15 @@
 </head>
 <body>
     <div id="toolbar" role="banner">
-        <button id="menu-button" aria-label="Open menu">Menu</button>
+        <button id="menu-button" aria-label="Open menu">
+            <img src="icons/filled/menu.svg" alt="" class="material-icon">
+            <span class="button-text">Menu</span>
+        </button>
         <span id="date-time" role="timer" aria-live="polite"></span>
-        <button id="expand-collapse-button" aria-expanded="true">Expand/Collapse</button>
+        <button id="expand-collapse-button" aria-expanded="true">
+            <img src="icons/filled/expand_less.svg" alt="" class="material-icon">
+            <span class="button-text">Collapse</span>
+        </button>
         <div id="day-progress-bar" role="progressbar" aria-label="Day progress"></div>
     </div>
     <div id="day-view" role="main">
@@ -27,8 +33,14 @@
     <div id="actionbar" role="complementary">
         <span id="current-task-name"></span>
         <span id="elapsed-time"></span>
-        <button id="play-pause-button">Play/Pause</button>
-        <button id="next-button">Next</button>
+        <button id="play-pause-button" aria-label="Start timer">
+            <img src="icons/filled/play_circle.svg" alt="" class="material-icon">
+            <span class="button-text">Start</span>
+        </button>
+        <button id="next-button" aria-label="Next task">
+            <img src="icons/filled/skip_next.svg" alt="" class="material-icon">
+            <span class="button-text">Next</span>
+        </button>
     </div>
     <script src="app.js"></script>
 </body>

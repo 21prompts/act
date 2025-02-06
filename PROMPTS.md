@@ -93,3 +93,7 @@ Let's review the chat history and set up day progress and any other missing feat
 The day progress bar does not seem to be correct, it should update every minute automatically for current time. 
 
 Also, let's remove the seconds display from current time. It is quite distracting.
+
+## Prompt 2
+
+Next let's focus on the buttons. Create a list of material-symbol icons that we can use for the buttons in mobile view to save space and write a /bin/sh script "fetch-icons.sh" to download them into the "static/icons/.." dir. The script will be run from project root.
