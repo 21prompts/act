@@ -134,6 +134,43 @@ class UIManager {
     }
 }
 
+class WeatherManager {
+    constructor() {
+        this.pollInterval = 5 * 60 * 1000; // 5 minutes
+        this.startPolling();
+    }
+
+    async fetchWeatherData() {
+        try {
+            const response = await fetch('/api/weather');
+            const data = await response.json();
+            this.updateWeatherIcons(data);
+            debugLog('Weather data updated');
+        } catch (err) {
+            debugLog(`Weather fetch error: ${err}`);
+        }
+    }
+
+    updateWeatherIcons(data) {
+        const slots = document.querySelectorAll('.time-slot');
+        slots.forEach(slot => {
+            const time = slot.querySelector('time').getAttribute('datetime');
+            const hour = new Date(time).getHours();
+            const weather = data.find(w => w.hour === hour);
+            if (weather) {
+                const icon = slot.querySelector('.weather-icon');
+                icon.src = `icons/filled/${weather.data}.svg`;
+                icon.alt = weather.description || '';
+            }
+        });
+    }
+
+    startPolling() {
+        this.fetchWeatherData();
+        setInterval(() => this.fetchWeatherData(), this.pollInterval);
+    }
+}
+
 class App {
     constructor() {
         this.debug = new URLSearchParams(window.location.search).has('debug');
@@ -144,6 +181,7 @@ class App {
         this.taskManager = new TaskManager();
         this.timeManager = new TimeManager();
         this.uiManager = new UIManager(this.taskManager);
+        this.weatherManager = new WeatherManager();
         
         this.uiManager.initialize();
     }
