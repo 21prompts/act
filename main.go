@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -86,8 +85,10 @@ func main() {
 	flag.BoolVar(&debug, "debug", false, "enable debug logging")
 	flag.Parse()
 
+	// Set up logging first
 	if debug {
 		log.SetOutput(os.Stdout)
+		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 		log.Println("Debug mode enabled")
 	} else {
 		log.SetOutput(os.Stderr)
@@ -95,25 +96,30 @@ func main() {
 
 	// Initialize database
 	var err error
+	log.Println("Initializing database")
 	db, err = InitDB()
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to initialize database: %v", err))
+		log.Fatal("Failed to initialize database:", err)
 	}
 	defer db.Close()
 
 	// Initialize weather service
+	log.Println("Initializing weather service")
 	ws, err := NewWeatherService(db)
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to initialize weather service: %v", err))
+		log.Fatal("Failed to initialize weather service:", err)
 	}
 	ws.Start()
 
 	// Setup routes
+	log.Println("Setting up API routes")
 	setupAPIHandlers()
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 
 	// Start server
 	addr := ":8080"
-	log.Printf("Server starting on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
+	log.Printf("Server starting on http://localhost%s", addr)
+	if err := http.ListenAndServe(addr, nil); err != nil {
+		log.Fatal("Server failed to start:", err)
+	}
 }

@@ -159,3 +159,15 @@ We want to use this hourly weather data to populate the icons in the frontend. S
 If we need additional icons, add them to the fetch-icons.sh script.
 
 Let's update main.go to work with the latest changes.
+
+### Prompt 5.1
+
+When I run the app with --debug, I get no output and the server isn't running.
+
+### Prompt 5.2
+
+09:25:57 system   | server.1 started (pid=11198)
+09:25:57 server.1 | # act
+09:25:57 server.1 | ./main.go:13:2: debug redeclared in this block
+09:25:57 server.1 | 	./db.go:12:5: other declaration of debug
+09:25:57 system   | server.1 stopped (rc=1)

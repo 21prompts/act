@@ -86,22 +86,23 @@ func (ws *WeatherService) fetchWeatherData() error {
 }
 
 func (ws *WeatherService) Start() {
+	if debug {
+		log.Println("Starting weather service")
+	}
+
+	// Fetch immediately on start
+	if err := ws.fetchWeatherData(); err != nil {
+		log.Printf("Initial weather fetch failed: %v", err)
+	}
+
 	ticker := time.NewTicker(10 * time.Minute)
 	go func() {
-		for {
+		for range ticker.C {
 			if err := ws.fetchWeatherData(); err != nil {
 				log.Printf("Error fetching weather: %v", err)
 			}
-			<-ticker.C
 		}
 	}()
 }
 
-func init() {
-	db := &DB{} // Initialize your database connection here
-	ws, err := NewWeatherService(db)
-	if err != nil {
-		log.Fatalf("Failed to create weather service: %v", err)
-	}
-	ws.Start()
-}
+// Remove the init() function that was here

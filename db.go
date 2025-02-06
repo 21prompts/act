@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"log"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -34,17 +36,25 @@ type Weather struct {
 }
 
 func InitDB() (*DB, error) {
+	if debug {
+		log.Println("Opening database connection")
+	}
+
 	db, err := sql.Open("sqlite3", "./act.db")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to open database: %v", err)
 	}
 
 	if err := db.Ping(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to ping database: %v", err)
+	}
+
+	if debug {
+		log.Println("Creating database schema")
 	}
 
 	if err := createSchema(db); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create schema: %v", err)
 	}
 
 	return &DB{db}, nil
