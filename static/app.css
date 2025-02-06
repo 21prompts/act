@@ -77,6 +77,46 @@ body {
     grid-auto-rows: 30px;
 }
 
+/* Time Slot Styles */
+.time-slot {
+    display: grid;
+    grid-template-columns: minmax(60px, auto) 40px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.time-slot[data-empty="true"] {
+    opacity: 0.7;
+}
+
+.time-slot time {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+}
+
+.time-slot .weather {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-slot .temperature {
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+.time-slot .task-name {
+    font-weight: 500;
+}
+
+.time-slot .duration {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
 /* Actionbar Styles */
 #actionbar {
     position: fixed;

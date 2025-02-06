@@ -101,3 +101,8 @@ Next let's focus on the buttons. Create a list of material-symbol icons that we 
 ### Prompt 2.1
 
 Let's review the button layout and positions. The "Play/Pause" button should be next to the "Next" button.
+
+## Prompt 3
+
+Let's add placeholders for the weather icons through the day in 30 minute increments. Wire up the expand/ collapse button to hide any elements that don't have a task name.
+Add 7 placeholder tasks between 08:00 and 17:00 for testing.

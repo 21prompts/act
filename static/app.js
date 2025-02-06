@@ -52,6 +52,73 @@ document.addEventListener("DOMContentLoaded", function() {
         // Implementation will depend on weather data structure
     }
 
+    // Placeholder tasks data
+    const placeholderTasks = [
+        { time: '08:00', name: 'Morning Review', duration: '30m' },
+        { time: '09:00', name: 'Team Standup', duration: '15m' },
+        { time: '10:30', name: 'Client Meeting', duration: '1h' },
+        { time: '13:00', name: 'Lunch Break', duration: '1h' },
+        { time: '14:30', name: 'Project Planning', duration: '1h' },
+        { time: '15:45', name: 'Code Review', duration: '45m' },
+        { time: '16:30', name: 'Daily Wrap-up', duration: '30m' }
+    ];
+
+    // Generate time slots
+    function generateTimeSlots() {
+        const dayView = document.getElementById('day-view');
+        const template = document.getElementById('time-slot-template');
+        dayView.textContent = ''; // Clear existing slots
+
+        // Generate slots for each 30-minute increment
+        for (let hour = 0; hour < 24; hour++) {
+            for (let min = 0; min < 60; min += 30) {
+                const timeString = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+                const slot = template.content.cloneNode(true).children[0];
+                
+                const timeElement = slot.querySelector('time');
+                timeElement.textContent = timeString;
+                timeElement.setAttribute('datetime', `2024-01-01T${timeString}:00`);
+
+                // Check if there's a task for this time
+                const task = placeholderTasks.find(t => t.time === timeString);
+                if (task) {
+                    slot.querySelector('.task-name').textContent = task.name;
+                    slot.querySelector('.duration').textContent = task.duration;
+                    slot.dataset.empty = 'false';
+                }
+
+                dayView.appendChild(slot);
+            }
+        }
+    }
+
+    // Handle expand/collapse
+    const expandCollapseButton = document.getElementById('expand-collapse-button');
+    let expanded = true;
+
+    function updateExpandCollapseButton() {
+        const icon = expandCollapseButton.querySelector('img');
+        const text = expandCollapseButton.querySelector('.button-text');
+        icon.src = `icons/filled/${expanded ? 'collapse_all' : 'expand_all'}.svg`;
+        text.textContent = expanded ? 'Collapse' : 'Expand';
+        expandCollapseButton.setAttribute('aria-expanded', expanded);
+    }
+
+    function toggleEmptySlots() {
+        const emptySlots = document.querySelectorAll('.time-slot[data-empty="true"]');
+        emptySlots.forEach(slot => {
+            slot.style.display = expanded ? 'grid' : 'none';
+        });
+        expanded = !expanded;
+        updateExpandCollapseButton();
+        debugLog(`View ${expanded ? 'expanded' : 'collapsed'}`);
+    }
+
+    expandCollapseButton.addEventListener('click', toggleEmptySlots);
+
+    // Initialize the view
+    generateTimeSlots();
+    updateExpandCollapseButton();
     // Initialize other UI elements and event listeners
     // ...
 });
