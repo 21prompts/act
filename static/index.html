@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Planner</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <div id="toolbar">
+        <button id="menu-button">Menu</button>
+        <span id="date-time"></span>
+        <button id="expand-collapse-button">Expand/Collapse</button>
+        <div id="day-progress-bar"></div>
+    </div>
+    <div id="day-view">
+        <!-- Rows with hourly weather and tasks will be dynamically generated here -->
+    </div>
+    <div id="actionbar">
+        <span id="current-task-name"></span>
+        <span id="elapsed-time"></span>
+        <button id="play-pause-button">Play/Pause</button>
+        <button id="next-button">Next</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
