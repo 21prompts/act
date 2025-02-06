@@ -110,3 +110,7 @@ Add 7 placeholder tasks between 08:00 and 17:00 for testing.
 ### Prompt 3.1
 
 This is a mobile-first app as described in the initial prompt (see prompts.md), we want the tasks list to be a single column.
+
+### Prompt 3.2
+
+This works, but now we have broken the button styles.
