@@ -4,9 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateDateTime() {
         const now = new Date();
         const options = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
+            weekday: 'short', 
+            month: 'short', 
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
