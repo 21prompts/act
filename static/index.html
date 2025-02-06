@@ -7,16 +7,24 @@
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <div id="toolbar">
-        <button id="menu-button">Menu</button>
-        <span id="date-time"></span>
-        <button id="expand-collapse-button">Expand/Collapse</button>
-        <div id="day-progress-bar"></div>
+    <div id="toolbar" role="banner">
+        <button id="menu-button" aria-label="Open menu">Menu</button>
+        <span id="date-time" role="timer" aria-live="polite"></span>
+        <button id="expand-collapse-button" aria-expanded="true">Expand/Collapse</button>
+        <div id="day-progress-bar" role="progressbar" aria-label="Day progress"></div>
     </div>
-    <div id="day-view">
+    <div id="day-view" role="main">
         <!-- Rows with hourly weather and tasks will be dynamically generated here -->
+        <template id="time-slot-template">
+            <div class="time-slot">
+                <time></time>
+                <img class="weather-icon" alt="" />
+                <span class="task-name"></span>
+                <span class="duration"></span>
+            </div>
+        </template>
     </div>
-    <div id="actionbar">
+    <div id="actionbar" role="complementary">
         <span id="current-task-name"></span>
         <span id="elapsed-time"></span>
         <button id="play-pause-button">Play/Pause</button>

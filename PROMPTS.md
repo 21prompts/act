@@ -82,3 +82,7 @@ Use basic css reset and box-sizing to ensure the ui design is consistent.
 Set up a colorful automatic light/dark theme with css variables and use a modern system-font stack.
 
 Ensure the frontend is mobile-first, accessible and easy to read in harsh light.
+
+## Prompt 1.2
+
+Let's review the chat history and set up day progress and any other missing features.

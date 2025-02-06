@@ -50,10 +50,19 @@ body {
 
 #day-progress-bar {
     width: 100%;
-    height: 5px;
-    background-color: #555;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
     position: absolute;
     bottom: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+#day-progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    transition: width 1s linear;
 }
 
 /* Day View Styles */
@@ -76,4 +85,50 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+}
+
+/* Weather Icons */
+.weather-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    #day-view {
+        grid-template-columns: minmax(60px, auto) 40px 1fr auto;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    #toolbar, #actionbar {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* Accessibility Enhancements */
+button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background: var(--button-background, #4CAF50);
+    color: var(--button-text, white);
+    cursor: pointer;
+}
+
+button:focus {
+    outline: 2px solid var(--focus-color, #90CAF9);
+    outline-offset: 2px;
+}
+
+[role="progressbar"] {
+    position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
 }
