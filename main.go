@@ -12,6 +12,8 @@ import (
 var (
 	debug bool
 	db    *DB
+	lat   float64
+	lon   float64
 )
 
 func jsonResponse(w http.ResponseWriter, data interface{}, status int) {
@@ -83,13 +85,15 @@ func setupAPIHandlers() {
 
 func main() {
 	flag.BoolVar(&debug, "debug", false, "enable debug logging")
+	flag.Float64Var(&lat, "lat", 51.5074, "latitude (default: London)")
+	flag.Float64Var(&lon, "lon", -0.1278, "longitude (default: London)")
 	flag.Parse()
 
 	// Set up logging first
 	if debug {
 		log.SetOutput(os.Stdout)
 		log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-		log.Println("Debug mode enabled")
+		log.Printf("Debug mode enabled, location: %.4f, %.4f", lat, lon)
 	} else {
 		log.SetOutput(os.Stderr)
 	}
@@ -103,9 +107,9 @@ func main() {
 	}
 	defer db.Close()
 
-	// Initialize weather service
+	// Initialize weather service with provided coordinates
 	log.Println("Initializing weather service")
-	ws, err := NewWeatherService(db)
+	ws, err := NewWeatherService(db, lat, lon)
 	if err != nil {
 		log.Fatal("Failed to initialize weather service:", err)
 	}

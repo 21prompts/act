@@ -211,3 +211,7 @@ Server logs:
 09:37:03 server.1 | 2025/02/06 09:37:03 db.go:141: Retrieved weather data: 01n
 
 Let's review openweathermap.md to ensure we have the correct data and are saving it correctly to the database.
+
+### Prompt 6.5
+
+We want to add a flag to the cli (main.go) to provide --lat and --lon and use that in weather.go to fetch data for user's location.

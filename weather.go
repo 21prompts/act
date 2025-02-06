@@ -20,7 +20,7 @@ type WeatherService struct {
 	client *http.Client
 }
 
-func NewWeatherService(db *DB) (*WeatherService, error) {
+func NewWeatherService(db *DB, lat, lon float64) (*WeatherService, error) {
 	apiKey := os.Getenv("OPENWEATHER_API_KEY")
 	if apiKey == "" {
 		return nil, fmt.Errorf("OPENWEATHER_API_KEY not set")
@@ -29,8 +29,8 @@ func NewWeatherService(db *DB) (*WeatherService, error) {
 	return &WeatherService{
 		db:     db,
 		apiKey: apiKey,
-		lat:    51.5074, // Default to London
-		lon:    -0.1278,
+		lat:    lat,
+		lon:    lon,
 		client: &http.Client{Timeout: 10 * time.Second},
 	}, nil
 }
