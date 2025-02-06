@@ -106,3 +106,7 @@ Let's review the button layout and positions. The "Play/Pause" button should be 
 
 Let's add placeholders for the weather icons through the day in 30 minute increments. Wire up the expand/ collapse button to hide any elements that don't have a task name.
 Add 7 placeholder tasks between 08:00 and 17:00 for testing.
+
+### Prompt 3.1
+
+This is a mobile-first app as described in the initial prompt (see prompts.md), we want the tasks list to be a single column.
