@@ -219,3 +219,7 @@ We want to add a flag to the cli (main.go) to provide --lat and --lon and use th
 ## Prompt 7
 
 Let's remove the placeholder tasks and set up db.go, tasks.go, types.go, app.js and related files to create and read data. In next step, we will work on the frontend to enable the same.
+
+### Prompt 7.1
+
+Why don't I see the hourly weather and 30 minute time slots? The should be present regardless of tasks.

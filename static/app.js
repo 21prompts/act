@@ -120,16 +120,18 @@ class UIManager {
     toggleEmptySlots() {
         const emptySlots = document.querySelectorAll('.time-slot[data-empty="true"]');
         emptySlots.forEach(slot => {
-            slot.style.display = this.expanded ? 'none' : 'grid';
+            slot.style.display = this.expanded ? 'grid' : 'none';
         });
         this.expanded = !this.expanded;
         localStorage.setItem('tasksExpanded', this.expanded);
         this.updateExpandCollapseButton();
-        debugLog(`View ${this.expanded ? 'expanded' : 'collapsed'}`);
     }
 
     generateTimeSlots() {
         this.dayView.textContent = '';
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+
         for (let hour = 0; hour < 24; hour++) {
             for (let min = 0; min < 60; min += 30) {
                 const timeString = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
@@ -137,17 +139,31 @@ class UIManager {
                 
                 const timeElement = slot.querySelector('time');
                 timeElement.textContent = timeString;
-                timeElement.setAttribute('datetime', `2024-01-01T${timeString}:00`);
+                timeElement.setAttribute('datetime', `${today}T${timeString}:00`);
 
                 const task = this.taskManager.getTaskAtTime(timeString);
                 if (task) {
                     slot.querySelector('.task-name').textContent = task.name;
                     slot.querySelector('.duration').textContent = task.duration;
                     slot.dataset.empty = 'false';
+                } else {
+                    slot.querySelector('.task-name').textContent = '';
+                    slot.querySelector('.duration').textContent = '';
+                    slot.dataset.empty = 'true';
                 }
+
+                // Set a default weather icon for slots without weather data
+                const weatherIcon = slot.querySelector('.weather-icon');
+                weatherIcon.src = 'icons/weather/01d.svg';
+                weatherIcon.alt = 'No weather data';
 
                 this.dayView.appendChild(slot);
             }
+        }
+
+        // Initial weather update
+        if (window.app.weatherManager) {
+            window.app.weatherManager.fetchWeatherData();
         }
     }
 

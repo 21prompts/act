@@ -45,18 +45,24 @@ func createSchema(db *sql.DB) error {
 	CREATE TABLE IF NOT EXISTS tasks (
 		id INTEGER PRIMARY KEY,
 		name TEXT NOT NULL,
-		start_time TEXT,
-		duration TEXT,
-		repeat TEXT CHECK(repeat IN ('daily', 'weekly') OR repeat IS NULL)
+		start_time TEXT NOT NULL,
+		duration TEXT NOT NULL,
+		repeat TEXT CHECK(repeat IN ('daily', 'weekly') OR repeat IS NULL),
+		description TEXT,
+		priority INTEGER DEFAULT 3
 	);
 
 	CREATE TABLE IF NOT EXISTS tasklog (
+		id INTEGER PRIMARY KEY,
 		date TEXT NOT NULL,
+		task_id INTEGER,
 		name TEXT NOT NULL,
 		start_time TEXT NOT NULL,
 		duration TEXT NOT NULL,
+		status TEXT CHECK(status IN ('completed', 'skipped', 'interrupted')),
+		notes TEXT,
 		weather JSON,
-		PRIMARY KEY (date, start_time)
+		FOREIGN KEY(task_id) REFERENCES tasks(id)
 	);
 
 	CREATE TABLE IF NOT EXISTS weather (
