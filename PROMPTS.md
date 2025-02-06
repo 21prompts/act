@@ -118,3 +118,7 @@ This works, but now we have broken the button styles.
 ### Prompt 3.3
 
 We need to set up z-index for the toolbars at 500 to keep them above the task list.
+
+### Prompt 3.4
+
+Clicking the expand/collapse button first time does nothing. Let's start the tasks list in collapsed mode and set up the button to expand it on first click. Save the expanded state in local storage and use that to set up the task list and button when reloading the page.

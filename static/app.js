@@ -92,9 +92,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Handle expand/collapse
+    // Handle expand/collapse with localStorage
     const expandCollapseButton = document.getElementById('expand-collapse-button');
-    let expanded = true;
+    let expanded = localStorage.getItem('tasksExpanded') === 'true';
 
     function updateExpandCollapseButton() {
         const icon = expandCollapseButton.querySelector('img');
@@ -107,18 +107,28 @@ document.addEventListener("DOMContentLoaded", function() {
     function toggleEmptySlots() {
         const emptySlots = document.querySelectorAll('.time-slot[data-empty="true"]');
         emptySlots.forEach(slot => {
-            slot.style.display = expanded ? 'grid' : 'none';
+            slot.style.display = expanded ? 'none' : 'grid';
         });
         expanded = !expanded;
+        localStorage.setItem('tasksExpanded', expanded);
         updateExpandCollapseButton();
         debugLog(`View ${expanded ? 'expanded' : 'collapsed'}`);
+    }
+
+    function applyInitialState() {
+        const emptySlots = document.querySelectorAll('.time-slot[data-empty="true"]');
+        emptySlots.forEach(slot => {
+            slot.style.display = expanded ? 'grid' : 'none';
+        });
+        updateExpandCollapseButton();
+        debugLog(`Initial view ${expanded ? 'expanded' : 'collapsed'}`);
     }
 
     expandCollapseButton.addEventListener('click', toggleEmptySlots);
 
     // Initialize the view
     generateTimeSlots();
-    updateExpandCollapseButton();
+    applyInitialState();
     // Initialize other UI elements and event listeners
     // ...
 });
