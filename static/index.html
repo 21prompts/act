@@ -31,16 +31,20 @@
         </template>
     </div>
     <div id="actionbar" role="complementary">
-        <span id="current-task-name"></span>
-        <span id="elapsed-time"></span>
-        <button id="play-pause-button" aria-label="Start timer">
-            <img src="icons/filled/play_circle.svg" alt="" class="material-icon">
-            <span class="button-text">Start</span>
-        </button>
-        <button id="next-button" aria-label="Next task">
-            <img src="icons/filled/skip_next.svg" alt="" class="material-icon">
-            <span class="button-text">Next</span>
-        </button>
+        <div id="task-info">
+            <span id="current-task-name"></span>
+            <span id="elapsed-time"></span>
+        </div>
+        <div id="controls">
+            <button id="play-pause-button" aria-label="Start timer">
+                <img src="icons/filled/play_circle.svg" alt="" class="material-icon">
+                <span class="button-text">Start</span>
+            </button>
+            <button id="next-button" aria-label="Next task">
+                <img src="icons/filled/skip_next.svg" alt="" class="material-icon">
+                <span class="button-text">Next</span>
+            </button>
+        </div>
     </div>
     <script src="app.js"></script>
 </body>

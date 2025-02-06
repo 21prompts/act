@@ -97,3 +97,7 @@ Also, let's remove the seconds display from current time. It is quite distractin
 ## Prompt 2
 
 Next let's focus on the buttons. Create a list of material-symbol icons that we can use for the buttons in mobile view to save space and write a /bin/sh script "fetch-icons.sh" to download them into the "static/icons/.." dir. The script will be run from project root.
+
+### Prompt 2.1
+
+Let's review the button layout and positions. The "Play/Pause" button should be next to the "Next" button.
