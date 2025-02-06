@@ -13,27 +13,7 @@ type DB struct {
 	*sql.DB
 }
 
-type Task struct {
-	ID        int64  `json:"id"`
-	Name      string `json:"name"`
-	StartTime string `json:"start_time,omitempty"`
-	Duration  string `json:"duration,omitempty"`
-	Repeat    string `json:"repeat,omitempty"` // daily or weekly
-}
-
-type TaskLog struct {
-	Date      string          `json:"date"`
-	Name      string          `json:"name"`
-	StartTime string          `json:"start_time"`
-	Duration  string          `json:"duration"`
-	Weather   json.RawMessage `json:"weather"`
-}
-
-type Weather struct {
-	Date string      `json:"date"`
-	Hour int         `json:"hour"`
-	Data WeatherData `json:"data"`
-}
+// Remove Task, TaskLog, and Weather type declarations as they're now in types.go
 
 func InitDB() (*DB, error) {
 	if debug {
@@ -123,14 +103,24 @@ func (db *DB) GetTasksForDay() ([]Task, error) {
 // Weather operations
 func (db *DB) SaveWeather(w *Weather) error {
 	query := `INSERT OR REPLACE INTO weather (date, hour, data)
-			 VALUES (?, ?, ?)`
-	_, err := db.Exec(query, w.Date, w.Hour, w.Data)
+             VALUES (?, ?, ?)`
+
+	dataJSON, err := json.Marshal(w.Data)
+	if err != nil {
+		return fmt.Errorf("failed to marshal weather data: %v", err)
+	}
+
+	if debug {
+		log.Printf("Saving weather data to DB: %s", string(dataJSON))
+	}
+
+	_, err = db.Exec(query, w.Date, w.Hour, string(dataJSON))
 	return err
 }
 
 func (db *DB) GetWeatherForDay(date string) ([]Weather, error) {
 	query := `SELECT date, hour, data FROM weather 
-			 WHERE date = ? ORDER BY hour`
+             WHERE date = ? ORDER BY hour`
 	rows, err := db.Query(query, date)
 	if err != nil {
 		return nil, err
@@ -140,10 +130,21 @@ func (db *DB) GetWeatherForDay(date string) ([]Weather, error) {
 	var weather []Weather
 	for rows.Next() {
 		var w Weather
-		err := rows.Scan(&w.Date, &w.Hour, &w.Data)
+		var dataJSON string
+		err := rows.Scan(&w.Date, &w.Hour, &dataJSON)
 		if err != nil {
 			return nil, err
 		}
+
+		if debug {
+			log.Printf("Retrieved weather data from DB: %s", dataJSON)
+		}
+
+		var weatherData WeatherData
+		if err := json.Unmarshal([]byte(dataJSON), &weatherData); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal weather data: %v", err)
+		}
+		w.Data = weatherData
 		weather = append(weather, w)
 	}
 	return weather, nil

@@ -1,1 +1,1 @@
-server: go run .
+server: go run . --debug

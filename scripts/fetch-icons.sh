@@ -16,6 +16,8 @@ ICONS=(
     "umbrella"         # Weather - rain
     "ac_unit"          # Weather - snow
     "thunderstorm"     # Weather - storm
+    "clear_day"
+    "bedtime"
 )
 
 # Download filled variants

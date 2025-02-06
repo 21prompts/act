@@ -35,21 +35,10 @@ func NewWeatherService(db *DB) (*WeatherService, error) {
 	}, nil
 }
 
-type WeatherData struct {
-	Icon        string `json:"icon"`
-	Description string `json:"description"`
-}
-
-type Weather struct {
-	Date string      `json:"date"`
-	Hour int         `json:"hour"`
-	Data WeatherData `json:"data"`
-}
-
 // Map OpenWeather icons to Material Design icons
 var weatherIconMap = map[string]string{
-	"01d": "light_mode",          // clear sky day
-	"01n": "dark_mode",           // clear sky night
+	"01d": "bedtime",             // clear sky day
+	"01n": "clear_day",           // clear sky night
 	"02d": "partly_cloudy_day",   // few clouds day
 	"02n": "partly_cloudy_night", // few clouds night
 	"03d": "cloud",               // scattered clouds
@@ -103,8 +92,8 @@ func (ws *WeatherService) fetchWeatherData() error {
 
 		weatherData := hour["weather"].([]interface{})[0].(map[string]interface{})
 		iconCode := weatherData["icon"].(string)
-		materialIcon := weatherIconMap[iconCode]
-		if materialIcon == "" {
+		materialIcon, ok := weatherIconMap[iconCode]
+		if !ok {
 			materialIcon = "cloud" // default icon
 		}
 
@@ -115,6 +104,11 @@ func (ws *WeatherService) fetchWeatherData() error {
 				Icon:        materialIcon,
 				Description: weatherData["description"].(string),
 			},
+		}
+
+		if debug {
+			dataBytes, _ := json.Marshal(weather)
+			log.Printf("Saving weather entry: %s", string(dataBytes))
 		}
 
 		if err := ws.db.SaveWeather(weather); err != nil {
