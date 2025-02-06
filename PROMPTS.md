@@ -114,3 +114,7 @@ This is a mobile-first app as described in the initial prompt (see prompts.md), 
 ### Prompt 3.2
 
 This works, but now we have broken the button styles.
+
+### Prompt 3.3
+
+We need to set up z-index for the toolbars at 500 to keep them above the task list.
