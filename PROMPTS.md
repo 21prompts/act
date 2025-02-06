@@ -122,3 +122,7 @@ We need to set up z-index for the toolbars at 500 to keep them above the task li
 ### Prompt 3.4
 
 Clicking the expand/collapse button first time does nothing. Let's start the tasks list in collapsed mode and set up the button to expand it on first click. Save the expanded state in local storage and use that to set up the task list and button when reloading the page.
+
+### Prompt 4
+
+Let's review the js code so far and refactor it to be modular classes that provide apis for their responsibilities.
