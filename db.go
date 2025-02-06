@@ -100,6 +100,33 @@ func (db *DB) GetTasksForDay() ([]Task, error) {
 	return tasks, nil
 }
 
+func (db *DB) GetTasksForDate(date string) ([]Task, error) {
+	query := `
+        SELECT id, name, start_time, duration, repeat, description, priority 
+        FROM tasks 
+        WHERE repeat != '' 
+        OR date(start_time) = date(?)
+        ORDER BY start_time`
+
+	rows, err := db.Query(query, date)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tasks []Task
+	for rows.Next() {
+		var t Task
+		err := rows.Scan(&t.ID, &t.Name, &t.StartTime, &t.Duration,
+			&t.Repeat, &t.Description, &t.Priority)
+		if err != nil {
+			return nil, err
+		}
+		tasks = append(tasks, t)
+	}
+	return tasks, nil
+}
+
 // Weather operations
 func (db *DB) SaveWeather(w *Weather) error {
 	query := `INSERT OR REPLACE INTO weather (date, hour, data)
@@ -148,6 +175,24 @@ func (db *DB) GetWeatherForDay(date string) ([]Weather, error) {
 		weather = append(weather, w)
 	}
 	return weather, nil
+}
+
+func (db *DB) GetWeatherForHour(date string, hour int) (Weather, error) {
+	query := `SELECT date, hour, data FROM weather 
+             WHERE date = ? AND hour = ?`
+
+	var w Weather
+	var dataJSON string
+	err := db.QueryRow(query, date, hour).Scan(&w.Date, &w.Hour, &dataJSON)
+	if err != nil {
+		return w, err
+	}
+
+	if err := json.Unmarshal([]byte(dataJSON), &w.Data); err != nil {
+		return w, fmt.Errorf("failed to unmarshal weather data: %v", err)
+	}
+
+	return w, nil
 }
 
 // TaskLog operations

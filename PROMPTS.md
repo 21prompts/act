@@ -215,3 +215,7 @@ Let's review openweathermap.md to ensure we have the correct data and are saving
 ### Prompt 6.5
 
 We want to add a flag to the cli (main.go) to provide --lat and --lon and use that in weather.go to fetch data for user's location.
+
+## Prompt 7
+
+Let's remove the placeholder tasks and set up db.go, tasks.go, types.go, app.js and related files to create and read data. In next step, we will work on the frontend to enable the same.

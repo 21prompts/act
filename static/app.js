@@ -48,23 +48,50 @@ class TimeManager {
 
 class TaskManager {
     constructor() {
-        this.tasks = [
-            { time: '08:00', name: 'Morning Review', duration: '30m' },
-            { time: '09:00', name: 'Team Standup', duration: '15m' },
-            { time: '10:30', name: 'Client Meeting', duration: '1h' },
-            { time: '13:00', name: 'Lunch Break', duration: '1h' },
-            { time: '14:30', name: 'Project Planning', duration: '1h' },
-            { time: '15:45', name: 'Code Review', duration: '45m' },
-            { time: '16:30', name: 'Daily Wrap-up', duration: '30m' }
-        ];
+        this.tasks = [];
+        this.fetchTasks();
+    }
+
+    async fetchTasks() {
+        try {
+            const response = await fetch('/api/tasks');
+            const data = await response.json();
+            this.tasks = data;
+            window.app.uiManager.generateTimeSlots(); // Refresh UI
+            debugLog('Tasks updated');
+        } catch (err) {
+            debugLog(`Error fetching tasks: ${err}`);
+        }
     }
 
     getTaskAtTime(timeString) {
-        return this.tasks.find(t => t.time === timeString);
+        return this.tasks.find(t => t.start_time === timeString);
     }
 
     getAllTasks() {
         return this.tasks;
+    }
+
+    async createTask(task) {
+        try {
+            const response = await fetch('/api/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(task)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to create task');
+            }
+            
+            await this.fetchTasks(); // Refresh task list
+            return true;
+        } catch (err) {
+            debugLog(`Error creating task: ${err}`);
+            return false;
+        }
     }
 }
 
