@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create icons directory structure
-mkdir -p static/icons/filled static/icons/outlined
+mkdir -p static/icons/filled static/icons/outlined static/icons/weather
 
 # List of icons we need with both filled and outlined variants
 ICONS=(
@@ -11,13 +11,6 @@ ICONS=(
     "play_circle"       # Start timer
     "pause_circle"      # Pause timer
     "skip_next"         # Next task
-    "wb_sunny"          # Weather - clear
-    "cloud"            # Weather - cloudy
-    "umbrella"         # Weather - rain
-    "ac_unit"          # Weather - snow
-    "thunderstorm"     # Weather - storm
-    "clear_day"
-    "bedtime"
 )
 
 # Download filled variants
@@ -34,7 +27,32 @@ for icon in "${ICONS[@]}"; do
     echo "Downloaded outlined ${icon}"
 done
 
-# Make script executable
-chmod +x scripts/fetch-icons.sh
+
+W_ICONS=(
+    "01d"
+    "02d"
+    "03d"
+    "04d"
+    "09d"
+    "10d"
+    "11d"
+    "13d"
+    "50d"
+    "01n"
+    "02n"
+    "03n"
+    "04n"
+    "09n"
+    "10n"
+    "11n"
+    "13n"
+    "50n"
+)
+# Download openweathermap icons
+for icon in "${W_ICONS[@]}"; do
+    curl -s "https://raw.githubusercontent.com/isneezy/open-weather-icons/refs/heads/master/src/svg/${icon}.svg" \
+        -o "static/icons/weather/${icon}.svg"
+    echo "Downloaded weather ${icon}"
+done
 
 echo "All icons downloaded successfully"
